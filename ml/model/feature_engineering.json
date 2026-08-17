@@ -1,0 +1,99 @@
+{
+  "feature_names": [
+    "Experience",
+    "Salary",
+    "Projects",
+    "Skill_Count",
+    "Certification_Count",
+    "Has_Certification",
+    "Education_B.Sc",
+    "Education_B.Tech",
+    "Education_M.Tech",
+    "Education_MBA",
+    "Education_PhD",
+    "Role_AI Researcher",
+    "Role_Cybersecurity Analyst",
+    "Role_Data Scientist",
+    "Role_Software Engineer",
+    "Cert_AWS Certified",
+    "Cert_Deep Learning Specialization",
+    "Cert_Google ML",
+    "Cert_None"
+  ],
+  "numeric_indices": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "numeric_names": [
+    "Experience",
+    "Salary",
+    "Projects",
+    "Skill_Count",
+    "Certification_Count",
+    "Has_Certification"
+  ],
+  "scaler": {
+    "mean": [
+      4.95,
+      80302.9175,
+      5.1625,
+      3.01625,
+      0.72375,
+      0.72375
+    ],
+    "scale": [
+      3.126899422750914,
+      22862.439840067236,
+      3.2528593191221784,
+      0.8021757522513381,
+      0.44714196571111503,
+      0.44714196571111503
+    ],
+    "numeric_indices": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "numeric_names": [
+      "Experience",
+      "Salary",
+      "Projects",
+      "Skill_Count",
+      "Certification_Count",
+      "Has_Certification"
+    ]
+  },
+  "categorical_encodings": {
+    "Education": [
+      "B.Sc",
+      "B.Tech",
+      "M.Tech",
+      "MBA",
+      "PhD"
+    ],
+    "Job Role": [
+      "AI Researcher",
+      "Cybersecurity Analyst",
+      "Data Scientist",
+      "Software Engineer"
+    ],
+    "Certifications": [
+      "AWS Certified",
+      "Deep Learning Specialization",
+      "Google ML",
+      "None"
+    ]
+  },
+  "feature_engineering": {
+    "Skill_Count": "Count of comma-separated skills",
+    "Certification_Count": "0 if Certifications == 'None' else 1",
+    "Has_Certification": "Same as Certification_Count"
+  }
+}

@@ -1,0 +1,210 @@
+{
+  "total_records": 1000,
+  "target_distribution": {
+    "Hire": 812,
+    "Reject": 188
+  },
+  "education_counts": {
+    "B.Sc": 205,
+    "MBA": 202,
+    "B.Tech": 200,
+    "M.Tech": 198,
+    "PhD": 195
+  },
+  "job_role_counts": {
+    "AI Researcher": 257,
+    "Data Scientist": 255,
+    "Cybersecurity Analyst": 255,
+    "Software Engineer": 233
+  },
+  "certification_counts": {
+    "None": 274,
+    "Deep Learning Specialization": 255,
+    "AWS Certified": 249,
+    "Google ML": 222
+  },
+  "skill_counts": {
+    "Python": 388,
+    "SQL": 370,
+    "Ethical Hacking": 206,
+    "TensorFlow": 205,
+    "Machine Learning": 200,
+    "NLP": 195,
+    "Linux": 191,
+    "Pytorch": 189,
+    "Java": 188,
+    "Deep Learning": 184,
+    "Cybersecurity": 184,
+    "Networking": 184,
+    "C++": 168,
+    "React": 165
+  },
+  "hiring_by_role": [
+    {
+      "role": "AI Researcher",
+      "total": 257,
+      "hired": 210,
+      "hire_rate": 0.8171206225680934
+    },
+    {
+      "role": "Cybersecurity Analyst",
+      "total": 255,
+      "hired": 202,
+      "hire_rate": 0.792156862745098
+    },
+    {
+      "role": "Data Scientist",
+      "total": 255,
+      "hired": 205,
+      "hire_rate": 0.803921568627451
+    },
+    {
+      "role": "Software Engineer",
+      "total": 233,
+      "hired": 195,
+      "hire_rate": 0.8369098712446352
+    }
+  ],
+  "hiring_by_education": [
+    {
+      "education": "B.Sc",
+      "total": 205,
+      "hired": 162,
+      "hire_rate": 0.7902439024390244
+    },
+    {
+      "education": "B.Tech",
+      "total": 200,
+      "hired": 166,
+      "hire_rate": 0.83
+    },
+    {
+      "education": "M.Tech",
+      "total": 198,
+      "hired": 158,
+      "hire_rate": 0.797979797979798
+    },
+    {
+      "education": "MBA",
+      "total": 202,
+      "hired": 165,
+      "hire_rate": 0.8168316831683168
+    },
+    {
+      "education": "PhD",
+      "total": 195,
+      "hired": 161,
+      "hire_rate": 0.8256410256410256
+    }
+  ],
+  "hiring_by_certification": [
+    {
+      "certification": "AWS Certified",
+      "total": 249,
+      "hired": 203,
+      "hire_rate": 0.8152610441767069
+    },
+    {
+      "certification": "Deep Learning Specialization",
+      "total": 255,
+      "hired": 211,
+      "hire_rate": 0.8274509803921568
+    },
+    {
+      "certification": "Google ML",
+      "total": 222,
+      "hired": 186,
+      "hire_rate": 0.8378378378378378
+    },
+    {
+      "certification": "None",
+      "total": 274,
+      "hired": 212,
+      "hire_rate": 0.7737226277372263
+    }
+  ],
+  "experience_distribution": [
+    {
+      "range": "0-2",
+      "total": 191,
+      "hired": 68,
+      "hire_rate": 0.35602094240837695
+    },
+    {
+      "range": "3-5",
+      "total": 268,
+      "hired": 203,
+      "hire_rate": 0.7574626865671642
+    },
+    {
+      "range": "6-8",
+      "total": 287,
+      "hired": 287,
+      "hire_rate": 1.0
+    },
+    {
+      "range": "9-10",
+      "total": 254,
+      "hired": 254,
+      "hire_rate": 1.0
+    }
+  ],
+  "salary_stats": {
+    "overall": {
+      "mean": 79994.486,
+      "median": 79834.5,
+      "std": 23048.47254936133
+    },
+    "hired": {
+      "mean": 80483.02463054187,
+      "median": 80325.5,
+      "std": 22983.75306394602
+    },
+    "rejected": {
+      "mean": 77884.41489361702,
+      "median": 76392.0,
+      "std": 23269.738633532867
+    }
+  },
+  "projects_by_hire": {
+    "mean": {
+      "0": 2.9095744680851063,
+      "1": 5.647783251231527
+    },
+    "median": {
+      "0": 3.0,
+      "1": 6.0
+    },
+    "std": {
+      "0": 2.212582837456412,
+      "1": 3.212810749142477
+    }
+  },
+  "certification_count_by_hire": {
+    "mean": {
+      "0": 0.6702127659574468,
+      "1": 0.7389162561576355
+    },
+    "median": {
+      "0": 1.0,
+      "1": 1.0
+    }
+  },
+  "experience_stats": {
+    "mean": 4.896,
+    "median": 5.0,
+    "std": 3.112695435289626,
+    "min": 0,
+    "max": 10
+  },
+  "projects_stats": {
+    "mean": 5.133,
+    "median": 5.0,
+    "std": 3.2313701045768113
+  },
+  "ai_score_stats": {
+    "mean": 83.95,
+    "median": 100.0,
+    "std": 20.98303571430473
+  }
+}

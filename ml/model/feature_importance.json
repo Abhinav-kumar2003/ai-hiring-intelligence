@@ -1,0 +1,198 @@
+{
+  "permutation_importance": [
+    {
+      "feature": "Experience",
+      "importance_mean": 0.4073261858349578,
+      "importance_std": 0.040800935604375664
+    },
+    {
+      "feature": "Projects",
+      "importance_mean": 0.11325536062378165,
+      "importance_std": 0.02074441574220251
+    },
+    {
+      "feature": "Skill_Count",
+      "importance_mean": 0.004061078622482117,
+      "importance_std": 0.002560219402838903
+    },
+    {
+      "feature": "Role_Software Engineer",
+      "importance_mean": 0.00029239766081866624,
+      "importance_std": 0.0003544091005404748
+    },
+    {
+      "feature": "Has_Certification",
+      "importance_mean": 0.0002436647173489015,
+      "importance_std": 0.0006707544776498534
+    },
+    {
+      "feature": "Role_AI Researcher",
+      "importance_mean": 1.6244314489877176e-05,
+      "importance_std": 0.0006010396361273729
+    },
+    {
+      "feature": "Cert_None",
+      "importance_mean": -1.1102230246251566e-17,
+      "importance_std": 0.00047080496251427863
+    },
+    {
+      "feature": "Education_M.Tech",
+      "importance_mean": -8.122157244967454e-05,
+      "importance_std": 0.0003187364663799254
+    },
+    {
+      "feature": "Certification_Count",
+      "importance_mean": -0.0001299545159194615,
+      "importance_std": 0.0006884217056665547
+    },
+    {
+      "feature": "Education_MBA",
+      "importance_mean": -0.0002599090318388675,
+      "importance_std": 0.0004310103691170043
+    },
+    {
+      "feature": "Cert_AWS Certified",
+      "importance_mean": -0.0002761533463288224,
+      "importance_std": 0.0003170763693298013
+    },
+    {
+      "feature": "Salary",
+      "importance_mean": -0.00038986354775830676,
+      "importance_std": 0.000993960918829034
+    },
+    {
+      "feature": "Education_B.Tech",
+      "importance_mean": -0.0004223521767382055,
+      "importance_std": 0.0005955264061021259
+    },
+    {
+      "feature": "Cert_Google ML",
+      "importance_mean": -0.0006822612085770063,
+      "importance_std": 0.00036899989251460515
+    },
+    {
+      "feature": "Role_Data Scientist",
+      "importance_mean": -0.0007634827810266698,
+      "importance_std": 0.0006777987668948928
+    },
+    {
+      "feature": "Education_B.Sc",
+      "importance_mean": -0.0007959714100065352,
+      "importance_std": 0.00035179349947542926
+    },
+    {
+      "feature": "Role_Cybersecurity Analyst",
+      "importance_mean": -0.0012508122157245173,
+      "importance_std": 0.0006931965007586992
+    },
+    {
+      "feature": "Cert_Deep Learning Specialization",
+      "importance_mean": -0.0016569200779727345,
+      "importance_std": 0.0006998264856575332
+    },
+    {
+      "feature": "Education_PhD",
+      "importance_mean": -0.001835607537361994,
+      "importance_std": 0.000685540865692329
+    }
+  ],
+  "gini_importance": [
+    {
+      "feature": "Experience",
+      "importance": 0.483401010548495
+    },
+    {
+      "feature": "Projects",
+      "importance": 0.225043521400757
+    },
+    {
+      "feature": "Salary",
+      "importance": 0.1020554854769797
+    },
+    {
+      "feature": "Skill_Count",
+      "importance": 0.0318401439970322
+    },
+    {
+      "feature": "Role_Cybersecurity Analyst",
+      "importance": 0.015118901224950812
+    },
+    {
+      "feature": "Role_Data Scientist",
+      "importance": 0.013505739964172404
+    },
+    {
+      "feature": "Education_B.Sc",
+      "importance": 0.011814630899808665
+    },
+    {
+      "feature": "Role_Software Engineer",
+      "importance": 0.011811654960648925
+    },
+    {
+      "feature": "Cert_Deep Learning Specialization",
+      "importance": 0.011652328320066125
+    },
+    {
+      "feature": "Education_PhD",
+      "importance": 0.01124526721692542
+    },
+    {
+      "feature": "Education_M.Tech",
+      "importance": 0.010971676112940188
+    },
+    {
+      "feature": "Education_MBA",
+      "importance": 0.01082603818617835
+    },
+    {
+      "feature": "Education_B.Tech",
+      "importance": 0.01073049890030787
+    },
+    {
+      "feature": "Role_AI Researcher",
+      "importance": 0.00995684544723104
+    },
+    {
+      "feature": "Cert_Google ML",
+      "importance": 0.0088781273248262
+    },
+    {
+      "feature": "Cert_AWS Certified",
+      "importance": 0.00881950988530311
+    },
+    {
+      "feature": "Cert_None",
+      "importance": 0.00784911363305748
+    },
+    {
+      "feature": "Certification_Count",
+      "importance": 0.007572901056499171
+    },
+    {
+      "feature": "Has_Certification",
+      "importance": 0.006906605443820423
+    }
+  ],
+  "feature_names": [
+    "Experience",
+    "Salary",
+    "Projects",
+    "Skill_Count",
+    "Certification_Count",
+    "Has_Certification",
+    "Education_B.Sc",
+    "Education_B.Tech",
+    "Education_M.Tech",
+    "Education_MBA",
+    "Education_PhD",
+    "Role_AI Researcher",
+    "Role_Cybersecurity Analyst",
+    "Role_Data Scientist",
+    "Role_Software Engineer",
+    "Cert_AWS Certified",
+    "Cert_Deep Learning Specialization",
+    "Cert_Google ML",
+    "Cert_None"
+  ]
+}

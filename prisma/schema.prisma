@@ -1,0 +1,138 @@
+// AI-Based Hiring Prediction System - Prisma Schema
+// Adapted from PostgreSQL spec to SQLite (environment constraint)
+// All tables mirror the original spec: users, candidates, predictions,
+// prediction_explanations, resume_files
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String   @id @default(cuid())
+  email           String   @unique
+  name            String
+  passwordHash    String
+  role            String   @default("recruiter")
+  avatarUrl       String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  candidates      Candidate[]
+  predictions     Prediction[]
+  resumeFiles     ResumeFile[]
+  sessions        Session[]
+  notifications   Notification[]
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  token        String   @unique
+  userId       String
+  expiresAt    DateTime
+  createdAt    DateTime @default(now())
+
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model Candidate {
+  id              String   @id @default(cuid())
+  userId          String
+  name            String
+  email           String?
+  phone           String?
+  skills          String   @default("")   // comma-separated
+  experience      Float    @default(0)
+  education       String   @default("")
+  certifications  String   @default("")   // comma-separated or "None"
+  jobRole         String   @default("")
+  salaryExpectation Float  @default(0)
+  projectsCount   Int      @default(0)
+  source          String   @default("manual") // manual | resume
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  predictions     Prediction[]
+  resumeFile      ResumeFile?
+
+  @@index([userId])
+  @@index([jobRole])
+  @@index([createdAt])
+}
+
+model Prediction {
+  id                String   @id @default(cuid())
+  userId            String
+  candidateId       String?
+  modelName         String
+  modelVersion      String
+  prediction        String   // "Hired" | "Rejected"
+  hireProbability   Float
+  rejectProbability Float
+  confidence        String   // "High" | "Medium" | "Low"
+  inputData         String   // JSON string of input features
+  createdAt         DateTime @default(now())
+
+  user              User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  candidate         Candidate? @relation(fields: [candidateId], references: [id], onDelete: SetNull)
+  explanations      PredictionExplanation[]
+
+  @@index([userId])
+  @@index([candidateId])
+  @@index([createdAt])
+  @@index([prediction])
+}
+
+model PredictionExplanation {
+  id            String   @id @default(cuid())
+  predictionId  String
+  feature       String
+  value         Float    // feature value (raw)
+  contribution  Float    // signed contribution to "Hire" probability
+  direction     String   // "positive" | "negative" | "neutral"
+  strength      String   // "strong" | "moderate" | "low"
+  createdAt     DateTime @default(now())
+
+  prediction    Prediction @relation(fields: [predictionId], references: [id], onDelete: Cascade)
+
+  @@index([predictionId])
+}
+
+model ResumeFile {
+  id           String   @id @default(cuid())
+  userId       String
+  candidateId  String?  @unique
+  originalName String
+  mimeType     String
+  size         Int
+  content      String   // extracted text content
+  extracted    String   // JSON of extracted fields
+  createdAt    DateTime @default(now())
+
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  candidate    Candidate? @relation(fields: [candidateId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String   // "candidate_created" | "prediction_completed" | "resume_processed" | "analytics_ready"
+  title     String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([read])
+}

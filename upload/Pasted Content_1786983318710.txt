@@ -1,0 +1,2527 @@
+# AI-BASED HIRING PREDICTION SYSTEM
+
+## Complete Full-Stack Machine Learning Application
+
+Build a complete, production-style **AI-Based Hiring Prediction System** that predicts whether a candidate is likely to be **Hired** or **Rejected** using resume and candidate information.
+
+This is NOT just a machine-learning notebook.
+
+Build a complete working application containing:
+
+* Machine Learning pipeline
+* Resume parsing
+* AI hiring prediction
+* Explainable AI
+* FastAPI backend
+* PostgreSQL database
+* Complete React frontend
+* Recruiter dashboard
+* Candidate management
+* Resume screening
+* Prediction history
+* Analytics dashboard
+* Model performance dashboard
+* Authentication
+* Responsive UI
+* API integration
+* Docker
+* Testing
+* Documentation
+
+The frontend must be a **fully implemented, polished web application**, not a simple form or basic Gradio interface.
+
+---
+
+# 1. PROJECT GOAL
+
+Create an AI-powered recruitment platform where recruiters can:
+
+1. Log in.
+2. Upload a candidate's resume.
+3. Automatically extract resume information.
+4. Review and edit extracted information.
+5. Run the machine-learning prediction.
+6. See Hired/Rejected prediction.
+7. See hiring probability.
+8. Understand why the model made the prediction.
+9. Save the candidate.
+10. View candidate history.
+11. Compare candidates.
+12. View hiring analytics.
+13. View model performance.
+14. Manage candidates from a centralized dashboard.
+
+The application should feel like a real **AI HR analytics SaaS product**.
+
+---
+
+# 2. TECHNOLOGY STACK
+
+## Frontend
+
+Use:
+
+* React
+* Vite
+* TypeScript
+* Tailwind CSS
+* React Router
+* Axios
+* Recharts
+* Lucide React
+* Framer Motion
+
+Optional:
+
+* TanStack Query
+* React Hook Form
+* Zod
+
+Use these only where they genuinely improve the architecture.
+
+---
+
+# 3. BACKEND
+
+Use:
+
+* Python
+* FastAPI
+* Pydantic
+* SQLAlchemy
+* PostgreSQL
+* JWT authentication
+* Uvicorn
+
+---
+
+# 4. MACHINE LEARNING
+
+Use:
+
+* Python
+* Pandas
+* NumPy
+* Scikit-learn
+* Matplotlib
+* Seaborn
+* Joblib
+* SHAP
+
+Optional:
+
+* XGBoost
+
+---
+
+# 5. DEPLOYMENT
+
+Use:
+
+* Docker
+* Docker Compose
+* PostgreSQL
+* Environment variables
+
+The complete system should be runnable using:
+
+```bash
+docker compose up --build
+```
+
+---
+
+# 6. APPLICATION ARCHITECTURE
+
+Use this architecture:
+
+```text
+                         RECRUITER
+                             │
+                             ▼
+              ┌──────────────────────────┐
+              │      REACT FRONTEND      │
+              │                          │
+              │ Login                    │
+              │ Dashboard                │
+              │ Candidates               │
+              │ Resume Screening         │
+              │ Candidate Details        │
+              │ Prediction               │
+              │ Analytics                │
+              │ Model Performance        │
+              │ Settings                 │
+              └────────────┬─────────────┘
+                           │
+                           │ REST API
+                           ▼
+              ┌──────────────────────────┐
+              │      FASTAPI BACKEND     │
+              │                          │
+              │ Authentication           │
+              │ Candidate APIs           │
+              │ Resume Parser            │
+              │ Prediction Service       │
+              │ Analytics APIs           │
+              │ Model APIs               │
+              └────────────┬─────────────┘
+                           │
+                 ┌─────────┴─────────┐
+                 ▼                   ▼
+       ┌─────────────────┐  ┌─────────────────┐
+       │ MACHINE LEARNING│  │   POSTGRESQL    │
+       │                 │  │                 │
+       │ Preprocessing   │  │ Users           │
+       │ Feature Eng.    │  │ Candidates      │
+       │ Model           │  │ Predictions     │
+       │ SHAP            │  │ History         │
+       └─────────────────┘  └─────────────────┘
+```
+
+---
+
+# 7. FRONTEND DESIGN PHILOSOPHY
+
+The frontend must look like a **premium AI recruitment SaaS platform**.
+
+Design inspiration:
+
+* Modern enterprise SaaS
+* Linear
+* Vercel
+* Stripe
+* Notion
+* Modern AI dashboards
+
+Do not copy any existing product.
+
+Use:
+
+* Clean spacing
+* Strong typography
+* Rounded cards
+* Subtle shadows
+* Professional colors
+* Clear hierarchy
+* Responsive layouts
+* Smooth transitions
+* Accessible components
+
+Avoid:
+
+* Overly flashy gradients
+* Excessive glassmorphism
+* Too many animations
+* Cluttered dashboards
+* Huge unnecessary hero sections
+* Generic bootstrap-looking interfaces
+
+---
+
+# 8. GLOBAL FRONTEND LAYOUT
+
+After authentication, use a dashboard layout:
+
+```text
+┌─────────────────────────────────────────────────────────────┐
+│ Logo     Search                     Notifications   Avatar  │
+├──────────────┬──────────────────────────────────────────────┤
+│              │                                              │
+│ Dashboard    │                                              │
+│ Candidates   │              MAIN CONTENT                    │
+│ Screening    │                                              │
+│ Analytics    │                                              │
+│ Model        │                                              │
+│              │                                              │
+│              │                                              │
+│ Settings     │                                              │
+│              │                                              │
+│ Logout       │                                              │
+└──────────────┴──────────────────────────────────────────────┘
+```
+
+Desktop:
+
+* Fixed sidebar
+* Top navigation
+* Scrollable content
+
+Mobile:
+
+* Collapsible sidebar
+* Hamburger menu
+* Responsive cards
+* Horizontally scrollable tables
+* Mobile-friendly forms
+
+---
+
+# 9. GLOBAL COMPONENT SYSTEM
+
+Create reusable components.
+
+Required components:
+
+```text
+Button
+Input
+Select
+Textarea
+Checkbox
+Radio
+Modal
+Dialog
+Dropdown
+Tooltip
+Badge
+Card
+StatCard
+Table
+Pagination
+Tabs
+ProgressBar
+CircularProgress
+Toast
+Alert
+Skeleton
+Spinner
+EmptyState
+ErrorState
+FileUpload
+SearchBar
+FilterDropdown
+DatePicker
+ChartCard
+Avatar
+Breadcrumb
+Sidebar
+Navbar
+```
+
+Do not duplicate components across pages.
+
+Create reusable UI primitives.
+
+---
+
+# 10. FRONTEND ROUTES
+
+Create these routes:
+
+```text
+/login
+/dashboard
+/candidates
+/candidates/:id
+/screening
+/predictions
+/predictions/:id
+/analytics
+/model-performance
+/settings
+/profile
+```
+
+Protect authenticated routes.
+
+Unauthenticated users should be redirected to `/login`.
+
+---
+
+# 11. LOGIN PAGE
+
+Create a polished login screen.
+
+Layout:
+
+```text
+┌───────────────────────┬───────────────────────────┐
+│                       │                           │
+│ AI Hiring             │ Welcome back             │
+│ Intelligence          │                           │
+│                       │ Email                     │
+│ Predict smarter.      │ [____________________]   │
+│ Hire better.          │                           │
+│                       │ Password                  │
+│ AI-powered hiring     │ [____________________]   │
+│ analytics platform.   │                           │
+│                       │ [      Sign In       ]    │
+│                       │                           │
+└───────────────────────┴───────────────────────────┘
+```
+
+Include:
+
+* Email
+* Password
+* Show/hide password
+* Remember me
+* Sign in
+* Forgot password UI
+* Loading state
+* Error state
+
+Do not implement fake authentication.
+
+Use the actual FastAPI authentication endpoint.
+
+---
+
+# 12. DASHBOARD PAGE
+
+This is the primary recruiter dashboard.
+
+Header:
+
+```text
+Dashboard
+Welcome back, Recruiter
+```
+
+Add:
+
+```text
++ Add Candidate
+Screen Resume
+```
+
+buttons.
+
+---
+
+## Dashboard Statistics
+
+Create four primary cards:
+
+```text
+Total Candidates
+1,248
+
+Hired
+642
+
+Rejected
+606
+
+Average Hiring Probability
+74.2%
+```
+
+Values must come from the backend/database.
+
+Do not hardcode them.
+
+Each card should include:
+
+* Icon
+* Main value
+* Label
+* Trend
+* Optional percentage change
+* Loading skeleton
+
+---
+
+# 13. DASHBOARD CHARTS
+
+Create a responsive grid.
+
+## Hiring Overview
+
+Use a donut/pie chart:
+
+```text
+Hired
+Rejected
+```
+
+Center:
+
+```text
+Total Candidates
+```
+
+---
+
+## Hiring Trend
+
+Use a line/area chart showing:
+
+```text
+Date
+Number of candidates
+```
+
+Allow:
+
+```text
+7 days
+30 days
+90 days
+1 year
+```
+
+---
+
+## Hiring by Job Role
+
+Use a bar chart:
+
+```text
+Software Engineer
+Data Scientist
+Frontend Developer
+Backend Developer
+ML Engineer
+DevOps Engineer
+```
+
+Use actual roles from the dataset/database.
+
+---
+
+## Experience Distribution
+
+Show candidates by experience range.
+
+---
+
+# 14. RECENT CANDIDATES
+
+Dashboard should show a recent candidate table.
+
+Columns:
+
+```text
+Candidate
+Role
+Experience
+Prediction
+Probability
+Date
+Action
+```
+
+Example:
+
+```text
+John Doe
+ML Engineer
+4 yrs
+HIRED
+87%
+2 hours ago
+View
+```
+
+Add:
+
+```text
+View all candidates →
+```
+
+---
+
+# 15. QUICK ACTIONS
+
+Add dashboard quick-action cards:
+
+```text
+Upload Resume
+Add Candidate
+Run Prediction
+View Analytics
+```
+
+Each should navigate to the correct page.
+
+---
+
+# 16. CANDIDATES PAGE
+
+Create a full candidate management system.
+
+Header:
+
+```text
+Candidates
+
+Manage and analyze all candidates.
+```
+
+Buttons:
+
+```text
++ Add Candidate
+Upload Resume
+```
+
+---
+
+# 17. CANDIDATE SEARCH
+
+Add a search bar.
+
+Search by:
+
+* Name
+* Email
+* Job role
+* Skills
+
+Search should call the backend with query parameters or filter loaded data appropriately.
+
+---
+
+# 18. CANDIDATE FILTERS
+
+Add filters:
+
+```text
+Prediction:
+All
+Hired
+Rejected
+
+Job Role:
+All
+...
+
+Experience:
+All
+0–2 years
+3–5 years
+6–10 years
+10+ years
+
+Hiring Probability:
+Any
+>50%
+>70%
+>80%
+>90%
+```
+
+Add:
+
+```text
+Clear Filters
+```
+
+---
+
+# 19. CANDIDATE TABLE
+
+Columns:
+
+```text
+□
+Candidate
+Job Role
+Experience
+Education
+Skills
+Prediction
+Probability
+Created
+Actions
+```
+
+Actions:
+
+```text
+View
+Edit
+Predict
+Delete
+```
+
+Use badges:
+
+```text
+HIRED
+REJECTED
+PENDING
+```
+
+---
+
+# 20. CANDIDATE CARD
+
+On smaller screens, convert table rows into responsive candidate cards.
+
+Card:
+
+```text
+┌─────────────────────────────┐
+│ Avatar   John Doe           │
+│          ML Engineer        │
+│                             │
+│ Experience     4 years      │
+│ Skills         Python       │
+│                             │
+│ Prediction     HIRED        │
+│ Probability    87%          │
+│                             │
+│ View Candidate              │
+└─────────────────────────────┘
+```
+
+---
+
+# 21. CANDIDATE DETAILS PAGE
+
+Create a detailed profile page.
+
+Header:
+
+```text
+John Doe
+ML Engineer
+
+[Run Prediction] [Edit Candidate]
+```
+
+---
+
+## Profile Summary
+
+Display:
+
+```text
+Experience
+Education
+Skills
+Certifications
+Projects
+Salary Expectation
+```
+
+---
+
+## Candidate Timeline
+
+Show:
+
+```text
+Resume uploaded
+Candidate analyzed
+Prediction generated
+Candidate updated
+```
+
+---
+
+## Prediction Card
+
+Display:
+
+```text
+Latest Prediction
+
+HIRED
+
+87.4%
+
+Hiring Probability
+```
+
+---
+
+## Prediction History
+
+Display previous predictions:
+
+```text
+Date
+Model
+Prediction
+Probability
+Version
+```
+
+---
+
+# 22. RESUME SCREENING PAGE
+
+Create a dedicated AI resume-screening experience.
+
+Page header:
+
+```text
+AI Resume Screening
+Upload a resume and let the AI analyze the candidate.
+```
+
+---
+
+# 23. RESUME UPLOAD UI
+
+Create a beautiful drag-and-drop uploader.
+
+```text
+┌─────────────────────────────────────────┐
+│                                         │
+│              Upload Resume              │
+│                                         │
+│       Drag & drop your resume here      │
+│                                         │
+│                 or                      │
+│                                         │
+│            [ Browse Files ]             │
+│                                         │
+│          PDF or DOCX • Max 10MB         │
+│                                         │
+└─────────────────────────────────────────┘
+```
+
+Show:
+
+* Upload progress
+* File name
+* File size
+* File type
+* Remove button
+* Retry button
+* Success state
+* Error state
+
+---
+
+# 24. RESUME PROCESSING STATE
+
+After upload show an AI processing animation:
+
+```text
+Analyzing resume...
+
+✓ Reading document
+✓ Extracting skills
+✓ Detecting education
+✓ Analyzing experience
+✓ Detecting certifications
+○ Preparing prediction
+```
+
+Do not fake processing indefinitely.
+
+Use actual backend requests.
+
+---
+
+# 25. EXTRACTED RESUME INFORMATION
+
+After parsing, display:
+
+```text
+Resume Analysis
+```
+
+Sections:
+
+### Personal Information
+
+```text
+Name
+Email
+Phone
+```
+
+### Professional Information
+
+```text
+Experience
+Job Role
+Education
+```
+
+### Skills
+
+Display skill chips:
+
+```text
+Python
+SQL
+Machine Learning
+Docker
+AWS
+```
+
+### Certifications
+
+Display certification badges.
+
+### Projects
+
+Display project count and extracted projects where available.
+
+---
+
+# 26. EDIT EXTRACTED INFORMATION
+
+Every extracted field should be editable.
+
+Show:
+
+```text
+AI extracted information
+
+[Edit]
+```
+
+Allow recruiter to correct:
+
+* Experience
+* Education
+* Skills
+* Certifications
+* Job role
+* Salary expectation
+* Projects count
+
+This corrected data is what gets sent to the ML prediction API.
+
+---
+
+# 27. SCREENING FORM
+
+Create a polished manual candidate form.
+
+Fields:
+
+```text
+Full Name
+Email
+Phone
+Experience
+Education
+Skills
+Certifications
+Job Role
+Salary Expectation
+Projects Count
+```
+
+Skills should support multi-select/tag input.
+
+Example:
+
+```text
+[Python ×] [SQL ×] [AWS ×] [+ Add skill]
+```
+
+Certifications should work similarly.
+
+Add validation.
+
+---
+
+# 28. PREDICT BUTTON
+
+Primary CTA:
+
+```text
+Analyze Candidate
+```
+
+On click:
+
+```text
+Analyzing candidate...
+```
+
+Disable duplicate submissions.
+
+Show loading indicator.
+
+Send data to:
+
+```text
+POST /api/predict
+```
+
+---
+
+# 29. PREDICTION RESULTS PAGE
+
+Create a visually impressive result screen.
+
+Header:
+
+```text
+AI Hiring Prediction
+```
+
+Main result:
+
+```text
+┌─────────────────────────────────────┐
+│                                     │
+│              87.4%                  │
+│        Hiring Probability           │
+│                                     │
+│              HIRED                  │
+│                                     │
+│     Model: Random Forest            │
+│     Version: 1.0                    │
+│                                     │
+└─────────────────────────────────────┘
+```
+
+Use a circular gauge.
+
+---
+
+# 30. HIRING VS REJECTION PROBABILITY
+
+Show:
+
+```text
+Hired
+87.4%
+
+Rejected
+12.6%
+```
+
+Use a horizontal probability bar or donut chart.
+
+---
+
+# 31. PREDICTION CONFIDENCE
+
+Show a confidence indicator.
+
+Example:
+
+```text
+High confidence
+```
+
+But calculate this based on a clearly defined methodology.
+
+Do not claim that raw model probability is always equivalent to calibrated confidence.
+
+---
+
+# 32. AI EXPLANATION
+
+Create:
+
+```text
+Why did the AI make this prediction?
+```
+
+Show top contributing features.
+
+Example:
+
+```text
+Positive factors
+
+Experience
+████████████  Strong
+
+Skill Match
+███████████   Strong
+
+Projects
+████████      Moderate
+
+Certifications
+███████       Moderate
+
+
+Negative factors
+
+Salary Expectation
+████            Low
+```
+
+These values must come from the actual explainability method.
+
+---
+
+# 33. FEATURE IMPORTANCE
+
+Create a chart:
+
+```text
+Top Factors
+```
+
+Use SHAP or appropriate model-specific explanation.
+
+Allow:
+
+```text
+Global explanation
+Individual candidate explanation
+```
+
+---
+
+# 34. PREDICTION SUMMARY
+
+Add:
+
+```text
+Prediction Summary
+
+The model predicts that this candidate has a
+87.4% probability of being classified as Hired.
+```
+
+Clearly state that this is a model prediction and not a definitive employment recommendation.
+
+---
+
+# 35. ACTIONS AFTER PREDICTION
+
+Buttons:
+
+```text
+Save Candidate
+View Candidate
+Run Again
+Download Report
+```
+
+Optional:
+
+```text
+Compare Candidate
+```
+
+---
+
+# 36. CANDIDATE COMPARISON
+
+Implement candidate comparison.
+
+Allow recruiters to select up to 3–5 candidates.
+
+Comparison table:
+
+```text
+Feature            Candidate A    Candidate B    Candidate C
+--------------------------------------------------------------
+Experience         5 yrs          3 yrs          7 yrs
+Skills             8              6              10
+Certifications     3              1              4
+Projects           7              4              9
+Probability        91%            72%             88%
+Prediction         Hired          Hired           Hired
+```
+
+Use actual candidate values.
+
+---
+
+# 37. PREDICTIONS PAGE
+
+Create a prediction history page.
+
+Columns:
+
+```text
+Candidate
+Prediction
+Probability
+Model
+Version
+Date
+Actions
+```
+
+Filters:
+
+```text
+Hired
+Rejected
+Model
+Date
+Probability
+```
+
+---
+
+# 38. ANALYTICS PAGE
+
+Create a professional HR analytics dashboard.
+
+Header:
+
+```text
+Hiring Analytics
+```
+
+Subtext:
+
+```text
+Understand candidate trends and hiring patterns.
+```
+
+---
+
+# 39. ANALYTICS CARDS
+
+Display:
+
+```text
+Total Candidates
+Hiring Rate
+Average Experience
+Average Projects
+Average Salary Expectation
+Average Hiring Probability
+```
+
+All data must come from backend analytics APIs.
+
+---
+
+# 40. ANALYTICS CHARTS
+
+Create:
+
+### Hiring Distribution
+
+Donut chart.
+
+### Hiring by Job Role
+
+Bar chart.
+
+### Hiring by Education
+
+Bar chart.
+
+### Experience vs Hiring
+
+Box/column visualization.
+
+### Certifications vs Hiring
+
+Chart.
+
+### Projects vs Hiring
+
+Chart.
+
+### Salary vs Hiring
+
+Distribution/box plot.
+
+### Top Skills
+
+Horizontal bar chart.
+
+---
+
+# 41. ANALYTICS FILTERS
+
+Allow filtering by:
+
+```text
+Date Range
+Job Role
+Education
+Experience
+Prediction
+```
+
+All charts should update based on filters.
+
+---
+
+# 42. MODEL PERFORMANCE PAGE
+
+Create a dedicated ML dashboard.
+
+Header:
+
+```text
+Model Performance
+```
+
+Display:
+
+```text
+Current Model
+Random Forest
+
+Version
+1.0
+
+Training Samples
+800+
+
+Features
+...
+
+Training Date
+...
+```
+
+Use actual values.
+
+---
+
+# 43. MODEL METRICS
+
+Display:
+
+```text
+Accuracy
+Precision
+Recall
+F1 Score
+ROC-AUC
+```
+
+Use attractive metric cards.
+
+---
+
+# 44. MODEL COMPARISON
+
+Show:
+
+```text
+Logistic Regression
+Decision Tree
+Random Forest
+Gradient Boosting
+KNN
+```
+
+Compare:
+
+```text
+Accuracy
+Precision
+Recall
+F1
+ROC-AUC
+```
+
+Use a grouped bar chart and/or table.
+
+---
+
+# 45. CONFUSION MATRIX
+
+Display the final model's confusion matrix.
+
+Use:
+
+```text
+Predicted
+           Reject   Hire
+Actual
+Reject
+Hire
+```
+
+Generate the values from actual evaluation results.
+
+---
+
+# 46. ROC CURVE
+
+Display the final model ROC curve.
+
+Include AUC.
+
+---
+
+# 47. FEATURE IMPORTANCE
+
+Display:
+
+```text
+Top Model Features
+```
+
+Use a horizontal bar chart.
+
+---
+
+# 48. MODEL INFORMATION
+
+Display:
+
+```text
+Model
+Version
+Training date
+Dataset size
+Features
+Training methodology
+Cross-validation
+```
+
+---
+
+# 49. SETTINGS PAGE
+
+Create a settings interface.
+
+Sections:
+
+### Profile
+
+```text
+Name
+Email
+Role
+```
+
+### Appearance
+
+```text
+Light
+Dark
+System
+```
+
+### Notifications
+
+```text
+Email notifications
+Prediction notifications
+Weekly analytics
+```
+
+### Security
+
+```text
+Change password
+Active sessions
+```
+
+Do not implement UI-only settings unless they actually work or clearly mark them as future functionality.
+
+---
+
+# 50. PROFILE PAGE
+
+Display:
+
+```text
+Profile picture/avatar
+Name
+Email
+Role
+Account created
+```
+
+Allow editing supported profile fields.
+
+---
+
+# 51. NOTIFICATIONS
+
+Create a notification dropdown.
+
+Examples:
+
+```text
+New candidate analyzed
+Prediction completed
+Resume processing completed
+Weekly analytics ready
+```
+
+Use real backend events/data where implemented.
+
+---
+
+# 52. SEARCH
+
+Implement global search.
+
+Search:
+
+```text
+Candidates
+Job roles
+Predictions
+```
+
+Show search results in a dropdown.
+
+---
+
+# 53. RESPONSIVE FRONTEND
+
+The entire frontend must be responsive.
+
+Desktop:
+
+```text
+Sidebar + Main Content
+```
+
+Tablet:
+
+```text
+Collapsed Sidebar
+```
+
+Mobile:
+
+```text
+Top Navigation
+Hamburger Menu
+Stacked Cards
+Scrollable Tables
+```
+
+Test all major pages at:
+
+```text
+1920px
+1440px
+1024px
+768px
+390px
+```
+
+---
+
+# 54. DARK MODE
+
+Implement dark mode.
+
+Provide:
+
+```text
+Light
+Dark
+System
+```
+
+Persist the user's preference.
+
+Ensure:
+
+* Charts remain readable.
+* Text has sufficient contrast.
+* Cards work correctly.
+* Inputs remain accessible.
+* Badges remain readable.
+
+---
+
+# 55. ANIMATIONS
+
+Use Framer Motion for subtle animations:
+
+* Page transitions
+* Card entrance
+* Modal transitions
+* Sidebar transitions
+* Progress animations
+* Prediction result reveal
+
+Do NOT animate everything.
+
+Animations should improve UX.
+
+---
+
+# 56. LOADING STATES
+
+Every asynchronous operation must have a loading state.
+
+Examples:
+
+```text
+Loading dashboard...
+Loading candidates...
+Uploading resume...
+Parsing resume...
+Generating prediction...
+Loading analytics...
+Loading model metrics...
+```
+
+Use skeleton loaders where appropriate.
+
+---
+
+# 57. ERROR STATES
+
+Create polished error states.
+
+Examples:
+
+```text
+Unable to load candidates.
+
+Try again
+```
+
+```text
+Resume processing failed.
+
+Upload another file
+```
+
+```text
+Prediction service unavailable.
+
+Retry
+```
+
+---
+
+# 58. EMPTY STATES
+
+Create useful empty states.
+
+Example:
+
+```text
+No candidates yet.
+
+Upload your first resume to start analyzing candidates.
+
+[Upload Resume]
+```
+
+---
+
+# 59. TOAST NOTIFICATIONS
+
+Show notifications for:
+
+```text
+Candidate created
+Candidate updated
+Candidate deleted
+Resume uploaded
+Prediction completed
+Prediction failed
+Settings updated
+```
+
+---
+
+# 60. FRONTEND API SERVICE
+
+Create a centralized Axios API client.
+
+Example structure:
+
+```text
+src/services/
+├── api.ts
+├── authApi.ts
+├── candidateApi.ts
+├── predictionApi.ts
+├── analyticsApi.ts
+└── modelApi.ts
+```
+
+Use environment variables:
+
+```text
+VITE_API_URL
+```
+
+---
+
+# 61. TYPESCRIPT TYPES
+
+Create proper types.
+
+Examples:
+
+```typescript
+Candidate
+Prediction
+PredictionExplanation
+DashboardStats
+AnalyticsData
+ModelMetrics
+User
+ResumeAnalysis
+```
+
+Avoid excessive `any`.
+
+---
+
+# 62. FORM VALIDATION
+
+Use React Hook Form + Zod if appropriate.
+
+Validate:
+
+```text
+Name
+Email
+Experience
+Education
+Skills
+Job Role
+Salary
+Projects
+```
+
+Example:
+
+```text
+Experience cannot be negative.
+Projects cannot be negative.
+Salary must be valid.
+Email must be valid.
+```
+
+---
+
+# 63. BACKEND API
+
+Implement:
+
+```text
+POST /api/auth/register
+POST /api/auth/login
+GET  /api/auth/me
+
+POST /api/resumes/upload
+
+POST /api/candidates
+GET  /api/candidates
+GET  /api/candidates/{id}
+PUT  /api/candidates/{id}
+DELETE /api/candidates/{id}
+
+POST /api/predict
+GET  /api/predictions
+GET  /api/predictions/{id}
+
+GET /api/dashboard/stats
+GET /api/analytics/hiring
+GET /api/analytics/skills
+GET /api/analytics/roles
+
+GET /api/model/metrics
+GET /api/model/features
+
+GET /health
+```
+
+---
+
+# 64. DATABASE
+
+Use PostgreSQL.
+
+Tables:
+
+```text
+users
+candidates
+predictions
+prediction_explanations
+resume_files
+```
+
+Relationships:
+
+```text
+User
+ │
+ └── Candidates
+       │
+       └── Predictions
+             │
+             └── Explanations
+```
+
+---
+
+# 65. RESUME PARSING BACKEND
+
+Accept:
+
+```text
+PDF
+DOCX
+```
+
+Extract:
+
+```text
+Name
+Email
+Phone
+Education
+Experience
+Skills
+Certifications
+Projects
+```
+
+Use:
+
+```text
+PyMuPDF
+python-docx
+```
+
+where appropriate.
+
+Validate:
+
+* File type
+* File size
+* Parsing errors
+
+---
+
+# 66. MACHINE LEARNING DATASET
+
+Use the provided 1,000+ resume dataset.
+
+Columns:
+
+```text
+Resume_ID
+Name
+Skills
+Experience (Years)
+Education
+Certifications
+Job Role
+Recruiter Decision
+Salary Expectation ($)
+Projects Count
+```
+
+Target:
+
+```text
+Recruiter Decision
+```
+
+Mapping:
+
+```text
+Hire → 1
+Reject → 0
+```
+
+---
+
+# 67. EDA
+
+Perform:
+
+```text
+head()
+info()
+describe()
+isnull()
+duplicated()
+value_counts()
+```
+
+Create:
+
+* Target distribution
+* Experience analysis
+* Education analysis
+* Certifications analysis
+* Job role analysis
+* Salary analysis
+* Projects analysis
+* Skill analysis
+* Correlation matrix
+
+---
+
+# 68. FEATURE ENGINEERING
+
+Create:
+
+```text
+Skill_Count
+Certification_Count
+```
+
+Extract meaningful skills.
+
+Exclude:
+
+```text
+Name
+Resume_ID
+```
+
+from model features.
+
+---
+
+# 69. MODEL TRAINING
+
+Train:
+
+```text
+Dummy Classifier
+Logistic Regression
+Decision Tree
+Random Forest
+Gradient Boosting
+KNN
+```
+
+Optional:
+
+```text
+XGBoost
+```
+
+---
+
+# 70. MODEL EVALUATION
+
+Calculate:
+
+```text
+Accuracy
+Precision
+Recall
+F1
+ROC-AUC
+```
+
+Generate:
+
+```text
+Confusion Matrix
+ROC Curve
+Feature Importance
+Model Comparison
+```
+
+Do not fabricate results.
+
+---
+
+# 71. HYPERPARAMETER TUNING
+
+Use:
+
+```text
+GridSearchCV
+```
+
+or:
+
+```text
+RandomizedSearchCV
+```
+
+Tune the strongest models.
+
+Select the final model based on actual performance.
+
+---
+
+# 72. SAVE MODEL
+
+Save:
+
+```text
+hiring_model.pkl
+preprocessor.pkl
+metadata.json
+```
+
+Use Joblib.
+
+FastAPI should load these at application startup.
+
+---
+
+# 73. PREDICTION FLOW
+
+Frontend:
+
+```text
+Candidate Form
+      ↓
+POST /api/predict
+      ↓
+FastAPI
+      ↓
+Feature Engineering
+      ↓
+Preprocessing
+      ↓
+ML Model
+      ↓
+Prediction
+      ↓
+SHAP Explanation
+      ↓
+Database
+      ↓
+JSON Response
+      ↓
+React
+      ↓
+Prediction UI
+```
+
+---
+
+# 74. PREDICTION RESPONSE
+
+Return:
+
+```json
+{
+  "prediction": "Hired",
+  "hire_probability": 0.874,
+  "reject_probability": 0.126,
+  "model_name": "Random Forest",
+  "model_version": "1.0",
+  "explanations": []
+}
+```
+
+Use actual model output.
+
+---
+
+# 75. RESPONSIBLE AI
+
+The application must clearly communicate:
+
+> This prediction is an AI-generated statistical estimate and should not be used as the sole basis for an employment decision.
+
+Discuss:
+
+* Bias
+* Fairness
+* Privacy
+* Explainability
+* Human oversight
+* Data quality
+* Model drift
+
+Do not use protected attributes or obvious proxies.
+
+---
+
+# 76. SECURITY
+
+Implement:
+
+* Password hashing
+* JWT authentication
+* Protected routes
+* Input validation
+* File validation
+* File size limits
+* CORS
+* Environment variables
+* SQLAlchemy ORM
+* Secure error responses
+
+Never expose secrets in frontend code.
+
+---
+
+# 77. DOCKER
+
+Create:
+
+```text
+frontend/Dockerfile
+backend/Dockerfile
+docker-compose.yml
+```
+
+Services:
+
+```text
+frontend
+backend
+postgres
+```
+
+Optional:
+
+```text
+nginx
+```
+
+---
+
+# 78. TESTING
+
+Backend:
+
+```text
+pytest
+```
+
+Test:
+
+* Authentication
+* Candidate creation
+* Candidate retrieval
+* Prediction
+* Invalid input
+* Resume upload
+* Health endpoint
+
+Frontend:
+
+Test important:
+
+* Login
+* Candidate form
+* Resume upload
+* Prediction display
+* Navigation
+
+---
+
+# 79. PROJECT STRUCTURE
+
+Use:
+
+```text
+ai-hiring-prediction/
+│
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── layouts/
+│   │   ├── hooks/
+│   │   ├── services/
+│   │   ├── types/
+│   │   ├── utils/
+│   │   ├── App.tsx
+│   │   └── main.tsx
+│   ├── package.json
+│   ├── Dockerfile
+│   └── .env.example
+│
+├── backend/
+│   ├── app/
+│   │   ├── api/
+│   │   ├── models/
+│   │   ├── schemas/
+│   │   ├── services/
+│   │   ├── database/
+│   │   └── main.py
+│   ├── models/
+│   │   ├── hiring_model.pkl
+│   │   ├── preprocessor.pkl
+│   │   └── metadata.json
+│   ├── requirements.txt
+│   ├── Dockerfile
+│   └── .env.example
+│
+├── ml/
+│   ├── dataset/
+│   ├── notebooks/
+│   │   └── hiring_prediction.ipynb
+│   ├── src/
+│   │   ├── preprocessing.py
+│   │   ├── feature_engineering.py
+│   │   ├── train.py
+│   │   ├── evaluate.py
+│   │   └── explain.py
+│   └── requirements.txt
+│
+├── docs/
+│   ├── architecture.md
+│   ├── api.md
+│   └── project-report.md
+│
+├── docker-compose.yml
+├── README.md
+└── .gitignore
+```
+
+---
+
+# 80. FINAL FRONTEND PAGE LIST
+
+The final frontend MUST contain all of these pages:
+
+```text
+1. Login
+2. Dashboard
+3. Candidates
+4. Candidate Details
+5. Resume Screening
+6. Prediction Result
+7. Prediction History
+8. Candidate Comparison
+9. Analytics
+10. Model Performance
+11. Profile
+12. Settings
+```
+
+Do not leave these as placeholder pages.
+
+Every page must have meaningful functionality.
+
+---
+
+# 81. FINAL FRONTEND QUALITY REQUIREMENT
+
+The frontend must NOT look like:
+
+* A basic HTML form
+* A simple Bootstrap dashboard
+* A default admin template
+* A prototype with fake data
+* A collection of disconnected screens
+
+It should look like a coherent, modern AI recruitment product.
+
+Use a consistent:
+
+* Color system
+* Typography system
+* Spacing system
+* Component system
+* Icon system
+* Chart system
+* Navigation system
+
+---
+
+# 82. REAL DATA REQUIREMENT
+
+Do not use fake dashboard statistics in the final implementation.
+
+The frontend should retrieve data from FastAPI.
+
+For development, mock data may be used temporarily, but replace it with real API/database data before completion.
+
+---
+
+# 83. FINAL USER EXPERIENCE
+
+The complete experience should be:
+
+```text
+LOGIN
+  ↓
+DASHBOARD
+  ↓
+UPLOAD RESUME
+  ↓
+AI RESUME PARSING
+  ↓
+REVIEW EXTRACTED DATA
+  ↓
+EDIT IF NECESSARY
+  ↓
+ANALYZE CANDIDATE
+  ↓
+ML PREDICTION
+  ↓
+HIRING PROBABILITY
+  ↓
+AI EXPLANATION
+  ↓
+SAVE CANDIDATE
+  ↓
+CANDIDATE PROFILE
+  ↓
+ANALYTICS
+  ↓
+MODEL PERFORMANCE
+```
+
+---
+
+# 84. FINAL DEMONSTRATION SCENARIO
+
+Demonstrate the application with:
+
+### Scenario 1
+
+Upload a strong technical resume.
+
+Show:
+
+```text
+Resume parsed
+Candidate information extracted
+Prediction generated
+Hiring probability
+Explanation
+```
+
+### Scenario 2
+
+Upload another candidate.
+
+Compare both candidates.
+
+### Scenario 3
+
+Open Analytics.
+
+Show:
+
+```text
+Hiring rate
+Job role distribution
+Experience trends
+Skills
+Education
+```
+
+### Scenario 4
+
+Open Model Performance.
+
+Show:
+
+```text
+Accuracy
+Precision
+Recall
+F1
+ROC-AUC
+Feature Importance
+Confusion Matrix
+```
+
+---
+
+# 85. README REQUIREMENTS
+
+Create a professional GitHub README containing:
+
+```text
+Project Overview
+Features
+Architecture
+Tech Stack
+Dataset
+Machine Learning Pipeline
+Frontend
+Backend
+Database
+API Documentation
+Installation
+Environment Variables
+Docker Setup
+Screenshots
+Model Results
+Ethical Considerations
+Future Improvements
+```
+
+---
+
+# 86. FINAL PROJECT REPORT
+
+Generate documentation covering:
+
+```text
+1. Introduction
+2. Problem Statement
+3. Objectives
+4. Dataset
+5. Data Preprocessing
+6. EDA
+7. Feature Engineering
+8. ML Models
+9. Model Evaluation
+10. Hyperparameter Tuning
+11. Explainable AI
+12. System Architecture
+13. Frontend
+14. Backend
+15. Database
+16. API
+17. Testing
+18. Results
+19. Ethical Considerations
+20. Limitations
+21. Future Scope
+22. Conclusion
+```
+
+---
+
+# 87. NON-FUNCTIONAL REQUIREMENTS
+
+The application should be:
+
+* Responsive
+* Modular
+* Maintainable
+* Secure
+* Accessible
+* Performant
+* Scalable
+* Well documented
+
+Use proper error handling.
+
+Use reusable components.
+
+Use clean architecture.
+
+Avoid unnecessary duplication.
+
+---
+
+# 88. IMPORTANT RULES
+
+1. Do not fabricate ML results.
+2. Do not fabricate analytics.
+3. Do not hardcode dashboard statistics.
+4. Do not use Name as a prediction feature.
+5. Do not use Resume_ID as a prediction feature.
+6. Do not introduce data leakage.
+7. Do not use protected characteristics as predictive variables.
+8. Do not create fake API responses in the final application.
+9. Do not leave frontend pages unfinished.
+10. Do not create placeholder buttons that do nothing.
+11. Every major frontend action must connect to the backend.
+12. Every ML prediction must come from the trained model.
+13. Every probability must come from the model.
+14. Every chart must use real backend data.
+15. Every model metric must come from actual evaluation.
+16. Use environment variables for configuration.
+17. Never commit secrets.
+18. Make the application responsive.
+19. Include loading, error, and empty states.
+20. Include responsible-AI warnings.
+
+---
+
+# 89. FINAL SUCCESS CRITERIA
+
+The project is complete only when a user can:
+
+```text
+✓ Create/login to an account
+✓ Open the recruiter dashboard
+✓ Upload a PDF/DOCX resume
+✓ Extract resume information
+✓ Edit extracted information
+✓ Submit candidate information
+✓ Run ML prediction
+✓ See Hired/Rejected
+✓ See hiring probability
+✓ See model explanation
+✓ Save candidate
+✓ View candidate profile
+✓ View prediction history
+✓ Compare candidates
+✓ View hiring analytics
+✓ View model performance
+✓ Filter candidates
+✓ Search candidates
+✓ Edit candidates
+✓ Delete candidates
+✓ Use the application on mobile
+✓ Switch between light/dark mode
+✓ Handle errors gracefully
+✓ Run the entire system with Docker
+```
+
+---
+
+# 90. FINAL ARCHITECTURE
+
+The final product must follow:
+
+```text
+                         AI HIRING PLATFORM
+                                  │
+                 ┌────────────────┴────────────────┐
+                 │                                 │
+                 ▼                                 ▼
+          RECRUITER UI                       AUTHENTICATION
+                 │                                 │
+                 ▼                                 ▼
+        ┌────────────────┐                 ┌───────────────┐
+        │ React Frontend │                 │ FastAPI Auth  │
+        └───────┬────────┘                 └───────────────┘
+                │
+                ▼
+        ┌────────────────┐
+        │ FastAPI REST   │
+        │ API            │
+        └───────┬────────┘
+                │
+       ┌────────┼───────────┐
+       │        │           │
+       ▼        ▼           ▼
+    Resume   Candidate    Analytics
+    Parser   Service      Service
+       │        │           │
+       └────────┼───────────┘
+                │
+                ▼
+       ┌──────────────────┐
+       │ ML Prediction    │
+       │ Pipeline         │
+       └────────┬─────────┘
+                │
+       ┌────────┴────────┐
+       ▼                 ▼
+  ML Model            SHAP
+       │                 │
+       └────────┬────────┘
+                │
+                ▼
+       ┌──────────────────┐
+       │ PostgreSQL       │
+       │                  │
+       │ Users            │
+       │ Candidates       │
+       │ Predictions      │
+       │ Explanations     │
+       └──────────────────┘
+```
+
+---
+
+# 91. FINAL INSTRUCTION TO THE AI CODING AGENT
+
+Build the entire application from start to finish.
+
+Do not stop after creating the machine-learning notebook.
+
+Do not stop after creating the backend.
+
+Do not stop after creating the frontend UI.
+
+Connect every layer:
+
+**Dataset → ML Model → Saved Model → FastAPI → PostgreSQL → React → Recruiter Dashboard**
+
+The final application must be **functional end-to-end**.
+
+If the dataset's actual columns or values differ from the expected schema, inspect the dataset and adapt the implementation rather than inventing data.
+
+If a feature cannot be reliably extracted from a resume, allow manual recruiter correction.
+
+If a model metric or insight is unavailable, calculate it from the actual dataset rather than fabricating it.
+
+The final result should look and behave like a real **AI-powered recruitment analytics SaaS platform**, while clearly communicating that the ML prediction is an academic/decision-support demonstration and not an autonomous hiring decision system.

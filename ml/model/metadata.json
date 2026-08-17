@@ -1,0 +1,65 @@
+{
+  "model_name": "Random Forest",
+  "model_version": "1.0.0",
+  "production_model": "Random Forest (Tuned)",
+  "training_date": "2026-08-17T16:22:48.322624+00:00",
+  "dataset_size": 1000,
+  "training_samples": 800,
+  "test_samples": 200,
+  "features_count": 19,
+  "features": [
+    "Experience",
+    "Salary",
+    "Projects",
+    "Skill_Count",
+    "Certification_Count",
+    "Has_Certification",
+    "Education_B.Sc",
+    "Education_B.Tech",
+    "Education_M.Tech",
+    "Education_MBA",
+    "Education_PhD",
+    "Role_AI Researcher",
+    "Role_Cybersecurity Analyst",
+    "Role_Data Scientist",
+    "Role_Software Engineer",
+    "Cert_AWS Certified",
+    "Cert_Deep Learning Specialization",
+    "Cert_Google ML",
+    "Cert_None"
+  ],
+  "target": "Recruiter Decision (Hire=1, Reject=0)",
+  "training_methodology": "Stratified 80/20 split + 5-fold StratifiedKFold cross-validation for hyperparameter tuning (GridSearchCV over n_estimators, max_depth, min_samples_split, min_samples_leaf).",
+  "cross_validation": "5-fold StratifiedKFold, scoring=roc_auc",
+  "best_params": {
+    "max_depth": 10,
+    "min_samples_leaf": 1,
+    "min_samples_split": 2,
+    "n_estimators": 200
+  },
+  "scaler": "StandardScaler applied to numeric features (Experience, Salary, Projects, Skill_Count, Certification_Count, Has_Certification)",
+  "categorical_encoding": "One-hot encoding for Education, Job Role, Certifications",
+  "performance": {
+    "accuracy": 0.965,
+    "precision": 0.9696969696969697,
+    "recall": 0.9876543209876543,
+    "f1": 0.9785932721712538,
+    "roc_auc": 0.9912280701754386
+  },
+  "responsible_ai_warning": "This prediction is an AI-generated statistical estimate and should not be used as the sole basis for an employment decision.",
+  "excluded_features": [
+    "Name",
+    "Resume_ID",
+    "AI Score (0-100)"
+  ],
+  "exclusion_reasons": {
+    "Name": "Personally identifiable, not predictive",
+    "Resume_ID": "Identifier only, not predictive",
+    "AI Score (0-100)": "Pre-computed score that perfectly proxies the target (data leakage)"
+  },
+  "ethical_notes": [
+    "No protected attributes (gender, race, age, etc.) are used as predictive variables.",
+    "Name and Resume_ID are explicitly excluded from model features.",
+    "Predictions are decision-support only; human oversight is required."
+  ]
+}
