@@ -45,6 +45,9 @@ async function changePassword(req: NextRequest) {
 
   const full = await db.user.findUnique({ where: { id: user.id } });
   if (!full) return unauthorized();
+  if (!full.passwordHash) {
+    return badRequest("Password changes for Clerk accounts must be made via your account settings.");
+  }
   if (!verifyPassword(parsed.data.currentPassword, full.passwordHash)) {
     return badRequest("Current password is incorrect");
   }

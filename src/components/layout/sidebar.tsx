@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useClerk } from "@clerk/nextjs";
 
 interface NavItem {
   view: ViewName;
@@ -27,6 +28,14 @@ const NAV_ITEMS: NavItem[] = [
 
 export function Sidebar() {
   const { view, navigate, logout, sidebarOpen, setSidebarOpen, compareCandidateIds } = useAppStore();
+  const { signOut } = useClerk();
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+    } catch {}
+    await logout();
+  };
 
   return (
     <>
@@ -109,7 +118,7 @@ export function Sidebar() {
             Settings
           </button>
           <button
-            onClick={() => logout()}
+            onClick={() => handleLogout()}
             className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950 dark:hover:text-red-400"
           >
             <LogOut className="h-4 w-4" />

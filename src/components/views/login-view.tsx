@@ -6,12 +6,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent } from "@/components/ui/card";
-import { Sparkles, Eye, EyeOff, Mail, Lock, ArrowRight, ShieldCheck, BarChart3, Zap } from "lucide-react";
+import { Sparkles, Eye, EyeOff, Mail, Lock, ArrowRight, ShieldCheck, BarChart3, Zap, Key } from "lucide-react";
 import { ApiError } from "@/services/api";
 import { toast } from "sonner";
+import { SignIn, SignUp } from "@clerk/nextjs";
 
 export function LoginView() {
   const { login, register, authLoading } = useAppStore();
+  const [authProvider, setAuthProvider] = useState<"clerk" | "direct">("clerk");
   const [mode, setMode] = useState<"login" | "register">("login");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("recruiter@aihiring.com");
@@ -41,15 +43,29 @@ export function LoginView() {
     }
   };
 
+  const handleQuickDemo = async () => {
+    setEmail("recruiter@aihiring.com");
+    setPassword("demo1234");
+    try {
+      await login("recruiter@aihiring.com", "demo1234");
+      toast.success("Logged in with demo account!");
+    } catch (e: any) {
+      setError(e.message || "Demo login failed");
+    }
+  };
+
   return (
     <div className="grid min-h-screen lg:grid-cols-2">
       {/* Left - Brand panel */}
       <div className="relative hidden flex-col justify-between overflow-hidden bg-gradient-to-br from-emerald-600 via-teal-700 to-cyan-800 p-12 text-white lg:flex">
         {/* Decorative grid */}
-        <div className="absolute inset-0 opacity-20" style={{
-          backgroundImage: "radial-gradient(circle at 1px 1px, white 1px, transparent 0)",
-          backgroundSize: "32px 32px",
-        }} />
+        <div
+          className="absolute inset-0 opacity-20"
+          style={{
+            backgroundImage: "radial-gradient(circle at 1px 1px, white 1px, transparent 0)",
+            backgroundSize: "32px 32px",
+          }}
+        />
 
         <div className="relative z-10 flex items-center gap-3">
           <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white/15 backdrop-blur">
@@ -112,120 +128,163 @@ export function LoginView() {
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {mode === "register" && (
-              <div className="space-y-2">
-                <Label htmlFor="name">Full Name</Label>
-                <Input
-                  id="name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Alex Morgan"
-                  autoComplete="name"
-                />
-              </div>
-            )}
+          {/* Auth Switcher */}
+          <div className="flex rounded-lg bg-muted p-1 text-xs">
+            <button
+              type="button"
+              onClick={() => setAuthProvider("direct")}
+              className={`flex-1 rounded-md py-1.5 font-medium transition-all ${
+                authProvider === "direct" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              Email & Password
+            </button>
+            <button
+              type="button"
+              onClick={() => setAuthProvider("clerk")}
+              className={`flex-1 rounded-md py-1.5 font-medium transition-all ${
+                authProvider === "clerk" ? "bg-background text-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              Clerk Auth
+            </button>
+          </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <Input
-                  id="email"
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="you@company.com"
-                  className="pl-9"
-                  autoComplete="email"
-                  required
-                />
-              </div>
-            </div>
-
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="password">Password</Label>
-                {mode === "login" && (
-                  <button type="button" className="text-xs text-muted-foreground hover:text-primary hover:underline">
-                    Forgot password?
-                  </button>
-                )}
-              </div>
-              <div className="relative">
-                <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
-                <Input
-                  id="password"
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className="pl-9 pr-10"
-                  autoComplete={mode === "login" ? "current-password" : "new-password"}
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword((s) => !s)}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
-                >
-                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                </button>
-              </div>
-            </div>
-
-            {mode === "login" && (
-              <div className="flex items-center gap-2">
-                <Checkbox id="remember" checked={remember} onCheckedChange={(v) => setRemember(!!v)} />
-                <Label htmlFor="remember" className="text-sm font-normal cursor-pointer">
-                  Remember me for 7 days
-                </Label>
-              </div>
-            )}
-
-            {error && (
-              <div className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700 dark:border-red-900 dark:bg-red-950 dark:text-red-400">
-                {error}
-              </div>
-            )}
-
-            <Button type="submit" className="w-full" disabled={authLoading}>
-              {authLoading ? (
-                <span className="flex items-center gap-2">
-                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
-                  {mode === "login" ? "Signing in..." : "Creating account..."}
-                </span>
+          {authProvider === "clerk" ? (
+            <div className="flex flex-col items-center justify-center">
+              {mode === "login" ? (
+                <SignIn routing="hash" />
               ) : (
-                <span className="flex items-center gap-2">
-                  {mode === "login" ? "Sign In" : "Create Account"}
-                  <ArrowRight className="h-4 w-4" />
-                </span>
+                <SignUp routing="hash" />
               )}
-            </Button>
-          </form>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-4">
+              {mode === "register" && (
+                <div className="space-y-2">
+                  <Label htmlFor="name">Full Name</Label>
+                  <Input
+                    id="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="Alex Morgan"
+                    autoComplete="name"
+                  />
+                </div>
+              )}
+
+              <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                  <Input
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="you@company.com"
+                    className="pl-9"
+                    autoComplete="email"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <Label htmlFor="password">Password</Label>
+                  {mode === "login" && (
+                    <button type="button" className="text-xs text-muted-foreground hover:text-primary hover:underline">
+                      Forgot password?
+                    </button>
+                  )}
+                </div>
+                <div className="relative">
+                  <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="••••••••"
+                    className="pl-9 pr-10"
+                    autoComplete={mode === "login" ? "current-password" : "new-password"}
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((s) => !s)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  >
+                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
+                </div>
+              </div>
+
+              {mode === "login" && (
+                <div className="flex items-center gap-2">
+                  <Checkbox id="remember" checked={remember} onCheckedChange={(v) => setRemember(!!v)} />
+                  <Label htmlFor="remember" className="text-sm font-normal cursor-pointer">
+                    Remember me for 7 days
+                  </Label>
+                </div>
+              )}
+
+              {error && (
+                <div className="rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700 dark:border-red-900 dark:bg-red-950 dark:text-red-400">
+                  {error}
+                </div>
+              )}
+
+              <Button type="submit" className="w-full" disabled={authLoading}>
+                {authLoading ? (
+                  <span className="flex items-center gap-2">
+                    <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+                    {mode === "login" ? "Signing in..." : "Creating account..."}
+                  </span>
+                ) : (
+                  <span className="flex items-center gap-2">
+                    {mode === "login" ? "Sign In" : "Create Account"}
+                    <ArrowRight className="h-4 w-4" />
+                  </span>
+                )}
+              </Button>
+            </form>
+          )}
 
           <div className="text-center text-sm text-muted-foreground">
             {mode === "login" ? (
               <>
                 Don&apos;t have an account?{" "}
-                <button onClick={() => { setMode("register"); setError(""); }} className="font-medium text-primary hover:underline">
+                <button
+                  onClick={() => { setMode("register"); setError(""); }}
+                  className="font-medium text-primary hover:underline"
+                >
                   Sign up
                 </button>
               </>
             ) : (
               <>
                 Already have an account?{" "}
-                <button onClick={() => { setMode("login"); setError(""); }} className="font-medium text-primary hover:underline">
+                <button
+                  onClick={() => { setMode("login"); setError(""); }}
+                  className="font-medium text-primary hover:underline"
+                >
                   Sign in
                 </button>
               </>
             )}
           </div>
 
-          {mode === "login" && (
+          {mode === "login" && authProvider === "direct" && (
             <Card className="bg-muted/40 border-dashed">
-              <CardContent className="p-4 text-xs text-muted-foreground space-y-1">
-                <p className="font-semibold text-foreground">Demo credentials</p>
+              <CardContent className="p-4 text-xs text-muted-foreground space-y-2">
+                <div className="flex items-center justify-between">
+                  <p className="font-semibold text-foreground">Demo credentials</p>
+                  <Button size="sm" variant="secondary" className="h-7 text-xs gap-1.5" onClick={handleQuickDemo}>
+                    <Key className="h-3 w-3" /> Quick Demo Login
+                  </Button>
+                </div>
                 <p>Email: <code className="rounded bg-background px-1.5 py-0.5">recruiter@aihiring.com</code></p>
                 <p>Password: <code className="rounded bg-background px-1.5 py-0.5">demo1234</code></p>
               </CardContent>

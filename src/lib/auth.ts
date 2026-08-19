@@ -1,7 +1,8 @@
 /**
- * Authentication utilities - password hashing (bcrypt-like) + JWT tokens.
- * Uses Web Crypto API (Node.js 18+ / Next.js Edge compatible).
+ * Authentication utilities - Clerk integration + database user synchronization.
+ * Supports Clerk authentication seamlessly with Prisma SQLite user persistence.
  */
+import { currentUser as clerkCurrentUser } from "@clerk/nextjs/server";
 import { createHash, randomBytes, scryptSync, timingSafeEqual } from "crypto";
 import { db } from "./db";
 import { cookies } from "next/headers";
@@ -43,7 +44,7 @@ export function generateToken(): string {
 }
 
 /**
- * Hash a token for storage (so a leaked DB doesn't expose live sessions).
+ * Hash a token for storage.
  */
 export function hashToken(token: string): string {
   return createHash("sha256").update(token).digest("hex");
@@ -74,23 +75,69 @@ export async function createSession(userId: string): Promise<string> {
 }
 
 /**
- * Get the current authenticated user from the session cookie.
- * Returns null if not authenticated.
+ * Get the current authenticated user.
+ * 1. Checks Clerk authentication first.
+ * 2. Synchronizes Clerk profile to Prisma User table.
+ * 3. Falls back to session cookie if Clerk session is absent.
  */
 export async function getCurrentUser() {
   try {
+    // 1. Try Clerk authentication
+    try {
+      const clerkUser = await clerkCurrentUser();
+      if (clerkUser) {
+        const primaryEmail =
+          clerkUser.emailAddresses?.find((e) => e.id === clerkUser.primaryEmailAddressId)?.emailAddress ||
+          clerkUser.emailAddresses?.[0]?.emailAddress ||
+          `${clerkUser.id}@clerk.user`;
+
+        const name =
+          `${clerkUser.firstName || ""} ${clerkUser.lastName || ""}`.trim() ||
+          clerkUser.username ||
+          primaryEmail.split("@")[0];
+
+        // Find or upsert user in database
+        let dbUser = await db.user.findFirst({
+          where: {
+            OR: [{ id: clerkUser.id }, { email: primaryEmail.toLowerCase() }],
+          },
+        });
+
+        if (!dbUser) {
+          dbUser = await db.user.create({
+            data: {
+              id: clerkUser.id,
+              email: primaryEmail.toLowerCase(),
+              name,
+              passwordHash: null,
+              avatarUrl: clerkUser.imageUrl || null,
+              role: "recruiter",
+            },
+          });
+        }
+
+        return dbUser;
+      }
+    } catch {
+      // Clerk not initialized or development mock
+    }
+
+    // 2. Fallback to session cookie
     const store = await cookies();
     const token = store.get(SESSION_COOKIE)?.value;
     if (!token) return null;
+
     const session = await db.session.findUnique({
       where: { token: hashToken(token) },
       include: { user: true },
     });
+
     if (!session) return null;
     if (session.expiresAt < new Date()) {
       await db.session.delete({ where: { id: session.id } }).catch(() => {});
       return null;
     }
+
     return session.user;
   } catch {
     return null;

@@ -18,10 +18,19 @@ import { notificationApi } from "@/services/api";
 import type { Notification } from "@/types";
 import { cn } from "@/lib/utils";
 import { formatDistanceToNow } from "date-fns";
+import { useClerk } from "@clerk/nextjs";
 
 export function Navbar() {
   const { user, setSidebarOpen, navigate, logout, setUser } = useAppStore();
+  const { signOut } = useClerk();
   const { theme, setTheme } = useTheme();
+
+  const handleLogout = async () => {
+    try {
+      await signOut();
+    } catch {}
+    await logout();
+  };
   // Detect client-side rendering without setState-in-effect. `useSyncExternalStore`
   // returns `false` during SSR/hydration and `true` once the client takes over.
   // next-themes returns `undefined` for `theme` until mounted, so we gate the
@@ -185,7 +194,7 @@ export function Navbar() {
               <Settings className="mr-2 h-4 w-4" /> Settings
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => logout()} className="text-red-600 focus:text-red-700">
+            <DropdownMenuItem onClick={() => handleLogout()} className="text-red-600 focus:text-red-700">
               <LogOut className="mr-2 h-4 w-4" /> Logout
             </DropdownMenuItem>
           </DropdownMenuContent>

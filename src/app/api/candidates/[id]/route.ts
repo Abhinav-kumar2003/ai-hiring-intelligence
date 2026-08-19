@@ -39,7 +39,20 @@ async function getCandidate(_req: NextRequest, ctx: { params: Promise<{ id: stri
   });
   if (!candidate) return notFound("Candidate not found");
 
-  return ok({ candidate });
+  const latestPrediction = candidate.predictions[0]
+    ? {
+        id: candidate.predictions[0].id,
+        prediction: candidate.predictions[0].prediction as "Hired" | "Rejected",
+        hireProbability: candidate.predictions[0].hireProbability,
+        rejectProbability: candidate.predictions[0].rejectProbability,
+        confidence: candidate.predictions[0].confidence,
+        modelName: candidate.predictions[0].modelName,
+        modelVersion: candidate.predictions[0].modelVersion,
+        createdAt: candidate.predictions[0].createdAt.toISOString(),
+      }
+    : null;
+
+  return ok({ candidate: { ...candidate, latestPrediction } });
 }
 
 async function updateCandidate(req: NextRequest, ctx: { params: Promise<{ id: string }> }) {
@@ -53,7 +66,7 @@ async function updateCandidate(req: NextRequest, ctx: { params: Promise<{ id: st
   const existing = await db.candidate.findFirst({ where: { id, userId: user.id } });
   if (!existing) return notFound("Candidate not found");
 
-  const data = { ...parsed.data };
+  const data: Record<string, any> = { ...parsed.data };
   if (data.email === "") data.email = null;
 
   const candidate = await db.candidate.update({

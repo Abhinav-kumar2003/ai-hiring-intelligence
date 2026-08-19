@@ -19,7 +19,7 @@ async function handler(req: NextRequest) {
   const { email, password } = parsed.data;
 
   const user = await db.user.findUnique({ where: { email: email.toLowerCase() } });
-  if (!user) return badRequest("Invalid email or password");
+  if (!user || !user.passwordHash) return badRequest("Invalid email or password");
   const valid = verifyPassword(password, user.passwordHash);
   if (!valid) return badRequest("Invalid email or password");
 

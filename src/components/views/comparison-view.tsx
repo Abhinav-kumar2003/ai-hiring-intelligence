@@ -186,19 +186,22 @@ export function ComparisonView() {
       key: "prediction",
       label: "Prediction",
       best: () => 0,
-      render: (c) => c.latestPrediction ? (
-        <Badge variant="secondary" className={predictionBadgeClass(c.latestPrediction.prediction)}>
-          {c.latestPrediction.prediction}
-        </Badge>
-      ) : <Badge variant="outline" className="text-muted-foreground">PENDING</Badge>,
+      render: (c) => {
+        const pred = c.latestPrediction || c.predictions?.[0];
+        return pred ? (
+          <Badge variant="secondary" className={predictionBadgeClass(pred.prediction)}>
+            {pred.prediction}
+          </Badge>
+        ) : <Badge variant="outline" className="text-muted-foreground">PENDING</Badge>;
+      },
     },
     {
       key: "hireProbability",
       label: "Hire Probability",
-      best: (c) => c.latestPrediction?.hireProbability ?? -1,
+      best: (c) => (c.latestPrediction?.hireProbability ?? c.predictions?.[0]?.hireProbability ?? -1),
       format: (v) => v >= 0 ? `${(v * 100).toFixed(1)}%` : "—",
       render: (c) => {
-        const prob = c.latestPrediction?.hireProbability;
+        const prob = c.latestPrediction?.hireProbability ?? c.predictions?.[0]?.hireProbability;
         if (prob === undefined || prob === null) return <span className="text-xs text-muted-foreground">—</span>;
         return (
           <div className="flex items-center gap-2">
@@ -212,17 +215,21 @@ export function ComparisonView() {
       key: "confidence",
       label: "Confidence",
       best: () => 0,
-      render: (c) => c.latestPrediction ? (
-        <Badge variant="outline" className="text-xs">{c.latestPrediction.confidence}</Badge>
-      ) : <span className="text-xs text-muted-foreground">—</span>,
+      render: (c) => {
+        const pred = c.latestPrediction || c.predictions?.[0];
+        return pred ? (
+          <Badge variant="outline" className="text-xs">{pred.confidence}</Badge>
+        ) : <span className="text-xs text-muted-foreground">—</span>;
+      },
     },
   ], [navigate]);
 
   // For each row, find best candidate id (for highlight)
   const bestIds: Record<string, string | null> = useMemo(() => {
     const out: Record<string, string | null> = {};
+    if (!candidates || candidates.length === 0) return out;
     for (const row of rows) {
-      if (row.best(candidates[0]) === 0 && candidates.every((c) => row.best(c) === 0)) {
+      if (candidates.length > 0 && row.best(candidates[0]) === 0 && candidates.every((c) => row.best(c) === 0)) {
         out[row.key] = null;
         continue;
       }
@@ -474,11 +481,11 @@ export function ComparisonView() {
               <p className="text-xs text-muted-foreground">Most Likely to Hire</p>
               <p className="text-sm font-medium">
                 {(() => {
-                  const withPred = candidates.filter((c) => c.latestPrediction);
+                  const withPred = candidates
+                    .map((c) => ({ name: c.name, pred: c.latestPrediction || c.predictions?.[0] }))
+                    .filter((c): c is { name: string; pred: NonNullable<typeof c.pred> } => Boolean(c.pred && typeof c.pred.hireProbability === "number"));
                   if (withPred.length === 0) return "—";
-                  return withPred.reduce((a, b) =>
-                    (b.latestPrediction!.hireProbability > a.latestPrediction!.hireProbability) ? b : a
-                  ).name;
+                  return withPred.reduce((a, b) => (b.pred.hireProbability > a.pred.hireProbability ? b : a)).name;
                 })()}
               </p>
             </div>
